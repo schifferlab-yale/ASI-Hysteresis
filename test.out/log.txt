@@ -1,0 +1,47 @@
+//mumax 3.10 [windows_amd64 go1.11.6(gc) CUDA-11.0]
+//GPU info: NVIDIA GeForce RTX 3090(24575MB), CUDA Driver 11.6, cc=8.6, using cc=80 PTX
+//(c) Arne Vansteenkiste, Dynamat LAB, Ghent University, Belgium
+//This is free software without any warranty. See license.txt
+//********************************************************************//
+//  If you use mumax in any work or publication,                      //
+//  we kindly ask you to cite the references in references.bib        //
+//********************************************************************//
+//output directory: test.out/
+resolution := 2e-9
+SetGridsize(100, 100, 1)
+SetCellsize(resolution, resolution, 5e-9)
+SetPBC(120, 120, 1)
+//resizing...
+OetoT := 7.96
+Msat = 2000 * 1000 / (4 * pi)
+Aex = 13e-12
+alpha = 0.2
+GammaLL = 2.95 * 2 * pi * 1000 / OeToT
+Bmax := 1e-4 * 1000 * OeToT
+Bstep := Bmax / 100
+MinimizerStop = 1e-6
+TableAdd(B_ext)
+m = randomMag()
+B_ext = vector(Bmax, 0, 0)
+relax()
+minimize()
+perturbation := cylinder(4*resolution, 4*resolution)
+perturbation.transl(5*resolution, 5*resolution, 0)
+defregion(1, perturbation)
+for B := Bmax; B >= -Bmax; B -= Bstep {
+	B_ext = vector(B, 0, 0)
+	m.setRegion(1, uniform(0, 1, 0))
+	minimize()
+	tablesave()
+}
+for B := -Bmax; B <= Bmax; B += Bstep {
+	B_ext = vector(B, 0, 0)
+	minimize()
+	tablesave()
+}
+//********************************************************************//
+//Please cite the following references, relevant for your simulation. //
+//See bibtex file in output folder for justification.                 //
+//********************************************************************//
+//   * Vansteenkiste et al., AIP Adv. 4, 107133 (2014).
+//   * Exl et al., J. Appl. Phys. 115, 17D118 (2014).

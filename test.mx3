@@ -1,0 +1,51 @@
+resolution:=2e-9
+
+SetGridsize(100, 100, 1)
+SetCellsize(resolution, resolution, 5e-9)
+SetPBC(120,120,1)
+
+OetoT := 7.96
+
+Msat  = 2000 * 1000/(4*pi) //2 kOe
+Aex   = 13e-12
+alpha=0.2
+GammaLL=2.95*2*pi*1000/OeToT //2.95 Mhz/Oe to Rad/Tesla
+
+
+
+
+Bmax  :=1e-6*1000*OeToT 
+Bstep :=  Bmax/100
+MinimizerStop = 1e-6
+TableAdd(B_ext)
+
+m = randomMag()
+B_ext=vector(Bmax,0,0)
+relax()       
+minimize()
+
+//for B:=0.0; B<=Bmax; B+=Bstep{
+//    B_ext = vector(B, 0, 0)
+//    minimize()   // small changes best minimized by minimize()
+//    tablesave()
+//}
+
+
+perturbation:=cylinder(4*resolution,4*resolution)
+perturbation.transl(5*resolution,5*resolution,0)
+defregion(1,perturbation)
+
+for B:=Bmax; B>=-Bmax; B-=Bstep{
+    B_ext = vector(B, 0, 0)
+
+    
+    m.setRegion(1,uniform(0,1,0))
+    minimize()   // small changes best minimized by minimize()
+    tablesave()
+}
+
+for B:=-Bmax; B<=Bmax; B+=Bstep{
+    B_ext = vector(B, 0, 0)
+    minimize()   // small changes best minimized by minimize()
+    tablesave()
+}
