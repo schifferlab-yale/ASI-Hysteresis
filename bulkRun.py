@@ -165,17 +165,17 @@ width=80e-9
 
 pointyConstantMin=0
 pointyConstantMax=1
-pointyConstantStepCount=5
+pointyConstantStepCount=50
 
 spacingMin=280e-9
 spacingMax=500e-9
 spacingStepCount=10
 
-spacingVals=np.array([256,320,384,480,512,1024])*1e-9
+spacingVals=np.array([320])*1e-9
 
 #2*spacing/resolution should have a lot of factors of 2
 
-lengthVals=np.array([100,200,300,400,500])*1e-9
+lengthVals=np.array([100,150,200,300,400])*1e-9
 lengthMin=100e-9
 lengthMax=500e-9
 lengthStepCount=5
