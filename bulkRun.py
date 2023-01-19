@@ -165,25 +165,26 @@ width=80e-9
 
 pointyConstantMin=0
 pointyConstantMax=1
-pointyConstantStepCount=50
+pointyConstantStepCount=10
 
 spacingMin=280e-9
 spacingMax=500e-9
 spacingStepCount=10
 
-spacingVals=np.array([320])*1e-9
+#spacingVals=np.array([280,300,320,340,360,380,400,440,480,512,600,768,1024])*1e-9
+spacingVals=np.array([280,320,340,380,440,512,768,1024])*1e-9
+
 
 #2*spacing/resolution should have a lot of factors of 2
 
-lengthVals=np.array([100,150,200,300,400])*1e-9
-lengthMin=100e-9
-lengthMax=500e-9
-lengthStepCount=5
+#lengthVals=np.array([100,150,200,300,400])*1e-9
+lengthVals=np.array([180,200,270])*1e-9
 
 
-for constant in np.linspace(pointyConstantMin,pointyConstantMax,pointyConstantStepCount+1):
+for constant in np.linspace(pointyConstantMin,pointyConstantMax,pointyConstantStepCount+1)[:]:
     for spacing in spacingVals:
         for length in lengthVals:
             if (spacing-length)/2<width/2:
-                continue#islands have merged
+                pass
+                #continue#islands have merged
             run_mumax3(getScript(width,length,constant,spacing), name=f"pointiness{constant}-spacing{spacing}-length{length}", verbose=False)
