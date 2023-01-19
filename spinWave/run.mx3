@@ -69,11 +69,11 @@ B_ext=vector(5e-2*r2o2,-5e-2*r2o2,0)
 run(1e-11)
 B_ext=vector(0,0,0)
 
-tMax:=1e-9
-tStep:=1e-12
+tMax:=5e-12
+tStep:=2e-15
 
 save(m)
 for time:=0.0; time<=tMax; time+=tStep{
-    run(1e-12)
+    run(tStep)
     save(m)
 }
