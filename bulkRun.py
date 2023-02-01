@@ -137,6 +137,7 @@ def getScript(width,length,constant,spacing):
     TableAdd(m_full.Region(1))
     TableAdd(m_full.Region(2))
     setgeom(hIslands.add(vIslands))
+    save(m)
 
 
     r2o2 := sqrt(2) / 2
@@ -171,20 +172,21 @@ spacingMin=280e-9
 spacingMax=500e-9
 spacingStepCount=10
 
-#spacingVals=np.array([280,300,320,340,360,380,400,440,480,512,600,768,1024])*1e-9
-spacingVals=np.array([280,320,340,380,440,512,768,1024])*1e-9
+
+#spacingVals=np.array([280,320,340,380,440,512,768,1024])*1e-9
+spacingVals=np.array([200,220,240,260,300,360,400,420])*1e-9
 
 
 #2*spacing/resolution should have a lot of factors of 2
 
 #lengthVals=np.array([100,150,200,300,400])*1e-9
-lengthVals=np.array([180,200,270])*1e-9
+lengthVals=np.array([180,200,230,270,300])*1e-9
 
 
 for constant in np.linspace(pointyConstantMin,pointyConstantMax,pointyConstantStepCount+1)[:]:
     for spacing in spacingVals:
         for length in lengthVals:
             if (spacing-length)/2<width/2:
-                pass
-                #continue#islands have merged
+                
+                continue#islands have merged
             run_mumax3(getScript(width,length,constant,spacing), name=f"pointiness{constant}-spacing{spacing}-length{length}", verbose=False)

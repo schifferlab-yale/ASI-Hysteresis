@@ -13,7 +13,7 @@ SetPBC(16, 16, 0)
 
 Msat = 700e3
 Aex = 13e-12
-alpha = 0.2
+alpha = 0.08
 Bmax := 0.1
 Bstep := Bmax / 200.0
 
@@ -69,8 +69,8 @@ B_ext=vector(5e-2*r2o2,-5e-2*r2o2,0)
 run(1e-11)
 B_ext=vector(0,0,0)
 
-tMax:=5e-12
-tStep:=2e-15
+tMax:=20e-9
+tStep:=20e-12
 
 save(m)
 for time:=0.0; time<=tMax; time+=tStep{
