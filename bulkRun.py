@@ -74,12 +74,16 @@ def run_mumax3(script, name, verbose=False):
     return table, fields
 
 
-def getScript(width,length,constant,spacing):
+def getScript(width,length,constant,spacing,seed=0):
 
     resolution=2e-9
     constant=length/2*constant
 
     code="""
+    randSeed("""+str(seed)+""")
+    ThermSeed("""+str(seed)+""")
+
+
     resolution := """+str(resolution)+"""
     zResolution := 5e-09
     a := """+str(spacing)+"""
@@ -97,7 +101,7 @@ def getScript(width,length,constant,spacing):
     Aex = 13e-12
     alpha = 0.2
     Bmax := 0.1
-    Bstep := Bmax / 200.0
+    Bstep := Bmax / 500.0
 
 
     TableAdd(B_ext)
@@ -151,11 +155,6 @@ def getScript(width,length,constant,spacing):
         minimize()
         tablesave()
     }
-    for B := -Bmax; B <= Bmax; B += Bstep {
-            B_ext = vector(B*r2o2, B*r2o2, 0)
-            minimize()
-            tablesave()
-        }
 
     """
     
@@ -174,19 +173,25 @@ spacingStepCount=10
 
 
 #spacingVals=np.array([280,320,340,380,440,512,768,1024])*1e-9
-spacingVals=np.array([200,220,240,260,300,360,400,420])*1e-9
-
+spacingVals=np.array([200,220,240,260,280,300,320,340,360,380,400,420,440,512,1024])*1e-9
 
 #2*spacing/resolution should have a lot of factors of 2
 
 #lengthVals=np.array([100,150,200,300,400])*1e-9
 lengthVals=np.array([180,200,230,270,300])*1e-9
 
+for spacing in spacingVals:
+    for length in lengthVals:
 
-for constant in np.linspace(pointyConstantMin,pointyConstantMax,pointyConstantStepCount+1)[:]:
-    for spacing in spacingVals:
-        for length in lengthVals:
+        pointinessVals=np.linspace(pointyConstantMin,pointyConstantMax,pointyConstantStepCount+1)[:]
+        pointinessVals=np.append(pointinessVals,80/(1e9*length))
+
+        print(pointinessVals)
+        for constant in pointinessVals:
+    
             if (spacing-length)/2<width/2:
-                
+                print(f"spacing={spacing} length={length} rejected")
                 continue#islands have merged
-            run_mumax3(getScript(width,length,constant,spacing), name=f"pointiness{constant}-spacing{spacing}-length{length}", verbose=False)
+
+            for seed in [0,1,2]:
+                run_mumax3(getScript(width,length,constant,spacing,seed=seed), name=f"p{constant};a{spacing};l{length};s{seed}", verbose=False)
