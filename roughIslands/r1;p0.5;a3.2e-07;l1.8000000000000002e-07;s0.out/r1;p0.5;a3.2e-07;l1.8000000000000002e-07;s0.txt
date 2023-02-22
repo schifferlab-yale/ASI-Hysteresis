@@ -1,0 +1,129 @@
+
+    randSeed(0)
+    ThermSeed(0)
+
+
+    resolution := 2e-09
+    zResolution := 5e-09
+    a := 3.2e-07
+
+    gridSize := 320 //2*a/resolution
+    gridDepth := 5 //25/zResolution
+
+    SetCellsize(resolution,resolution,zResolution)
+    SetGridsize(gridSize,gridSize,gridDepth)
+
+    SetPBC(16, 16, 0)
+
+
+    Msat = 700e3
+    Aex = 13e-12
+    alpha = 0.2
+    Bmax := 0.1
+    Bstep := Bmax / 500.0
+
+
+    TableAdd(B_ext)
+    TableAdd(m_full)
+
+
+    islandWidth := 8e-08
+    islandLength := 1.8000000000000002e-07
+    ellipseConstant:=4.5000000000000006e-08
+
+
+    hIsland := rect(islandLength-2*ellipseConstant, islandWidth)
+    hIsland = hIsland.add(ellipse(ellipseConstant*2,islandWidth).transl(islandLength/2-ellipseConstant, 0, 0))
+    hIsland = hIsland.add(ellipse(ellipseConstant*2,islandWidth).transl(-islandLength/2+ellipseConstant, 0, 0))
+    
+    hIsland = hIsland.sub(rect(7.691362900354792e-10,7.691362900354792e-10).transl(-2.868005474702356e-08,-4e-08,0))
+hIsland = hIsland.add(rect(4.675986318769738e-09,4.675986318769738e-09).transl(-7.892519058485407e-08,-2.627988302631132e-08,0))
+hIsland = hIsland.sub(rect(8.658711342844138e-09,8.658711342844138e-09).transl(7.231176262598546e-08,-3.1790271014413145e-08,0))
+hIsland = hIsland.add(rect(3.5767246646492655e-09,3.5767246646492655e-09).transl(-3.93640200946902e-08,4e-08,0))
+hIsland = hIsland.sub(rect(3.690435730603441e-09,3.690435730603441e-09).transl(8.887037631263138e-08,8.906209000799167e-09,0))
+hIsland = hIsland.add(rect(2.4680552851957492e-09,2.4680552851957492e-09).transl(5.5021160389949383e-08,3.8995549927197726e-08,0))
+hIsland = hIsland.add(rect(6.744735576348217e-09,6.744735576348217e-09).transl(-3.8858260113119116e-09,-4e-08,0))
+hIsland = hIsland.sub(rect(3.1407730297540082e-09,3.1407730297540082e-09).transl(-5.379617752218675e-08,3.922838237805071e-08,0))
+hIsland = hIsland.add(rect(4.82706500565159e-09,4.82706500565159e-09).transl(3.541644692473381e-08,-4e-08,0))
+hIsland = hIsland.sub(rect(5.30145601859704e-10,5.30145601859704e-10).transl(-3.2389489153505e-08,-4e-08,0))
+hIsland = hIsland.add(rect(6.509588093663395e-09,6.509588093663395e-09).transl(4.302784156246897e-08,4e-08,0))
+hIsland = hIsland.sub(rect(1.8102147928556034e-09,1.8102147928556034e-09).transl(-3.1540363362607184e-08,-4e-08,0))
+hIsland = hIsland.sub(rect(6.6692618476438934e-09,6.6692618476438934e-09).transl(2.9546080225728822e-08,4e-08,0))
+hIsland = hIsland.add(rect(6.779469261527171e-09,6.779469261527171e-09).transl(6.370388393787559e-08,-3.638113444787497e-08,0))
+hIsland = hIsland.sub(rect(4.483726803566196e-09,4.483726803566196e-09).transl(-2.282894120866348e-08,-4e-08,0))
+hIsland = hIsland.sub(rect(8.367850854794346e-10,8.367850854794346e-10).transl(4.88847350006952e-08,3.985067271367999e-08,0))
+hIsland = hIsland.add(rect(1.0995249531353734e-09,1.0995249531353734e-09).transl(-2.940651750440688e-08,-4e-08,0))
+hIsland = hIsland.add(rect(2.68532596960931e-09,2.68532596960931e-09).transl(4.365017072590545e-08,4e-08,0))
+hIsland = hIsland.add(rect(5.4855065704309345e-09,5.4855065704309345e-09).transl(7.408609812533712e-08,-3.0521380754078216e-08,0))
+hIsland = hIsland.sub(rect(4.8991945178959406e-09,4.8991945178959406e-09).transl(7.34677923001511e-08,3.0978572303606e-08,0))
+hIsland = hIsland.sub(rect(9.680487112320064e-09,9.680487112320064e-09).transl(8.260246494573327e-08,2.197290596500797e-08,0))
+hIsland = hIsland.sub(rect(5.014384924179521e-09,5.014384924179521e-09).transl(8.387798793711833e-08,2.0142741073267987e-08,0))
+hIsland = hIsland.sub(rect(6.5237790485510725e-09,6.5237790485510725e-09).transl(-5.475334826373118e-08,3.9049165061080423e-08,0))
+hIsland = hIsland.sub(rect(5.203461423164258e-10,5.203461423164258e-10).transl(4.40518482034535e-09,-4e-08,0))
+hIsland = hIsland.add(rect(4.615913881479359e-09,4.615913881479359e-09).transl(-8.629642951306115e-08,1.589110870517606e-08,0))
+hIsland = hIsland.sub(rect(5.388325970166834e-09,5.388325970166834e-09).transl(6.155349285968798e-08,-3.7195320285967573e-08,0))
+hIsland = hIsland.sub(rect(8.241516409107728e-09,8.241516409107728e-09).transl(-7.305180086795074e-08,3.1276973338017104e-08,0))
+hIsland = hIsland.sub(rect(5.547308718071996e-09,5.547308718071996e-09).transl(-2.201907412329809e-08,4e-08,0))
+hIsland = hIsland.sub(rect(7.573471807918948e-09,7.573471807918948e-09).transl(1.4231692972914847e-08,4e-08,0))
+hIsland = hIsland.add(rect(8.679791224533178e-09,8.679791224533178e-09).transl(5.866879292669097e-08,-3.811005868247935e-08,0))
+hIsland = hIsland.add(rect(4.248062098018892e-09,4.248062098018892e-09).transl(-7.726423930248518e-08,-2.7883622163797318e-08,0))
+hIsland = hIsland.sub(rect(7.193431468745005e-09,7.193431468745005e-09).transl(-3.6435212512602366e-08,4e-08,0))
+hIsland = hIsland.sub(rect(5.789714142139134e-09,5.789714142139134e-09).transl(-5.866891875316051e-08,3.811002302425482e-08,0))
+hIsland = hIsland.add(rect(9.813360806075606e-09,9.813360806075606e-09).transl(-6.987031367303735e-09,4e-08,0))
+hIsland = hIsland.add(rect(3.029572437476602e-10,3.029572437476602e-10).transl(-6.25484731412684e-08,3.683316906051044e-08,0))
+hIsland = hIsland.add(rect(5.202032756623898e-11,5.202032756623898e-11).transl(-1.0180827218065002e-08,4e-08,0))
+hIsland = hIsland.sub(rect(2.3877995507842055e-09,2.3877995507842055e-09).transl(-6.155729770924e-08,-3.719398217691763e-08,0))
+hIsland = hIsland.add(rect(1.0580241058902263e-09,1.0580241058902263e-09).transl(6.467583673434926e-08,3.597377864044435e-08,0))
+hIsland = hIsland.sub(rect(1.2312830513098838e-09,1.2312830513098838e-09).transl(7.192546143503495e-08,3.2049585366757764e-08,0))
+hIsland = hIsland.sub(rect(5.122881764038493e-09,5.122881764038493e-09).transl(-5.0496052825315646e-08,-3.970054230649998e-08,0))
+hIsland = hIsland.sub(rect(6.610697311684733e-10,6.610697311684733e-10).transl(-3.12940771252984e-08,-4e-08,0))
+hIsland = hIsland.sub(rect(9.815236171638451e-09,9.815236171638451e-09).transl(-1.654185534127649e-08,4e-08,0))
+hIsland = hIsland.sub(rect(3.4025589949683976e-09,3.4025589949683976e-09).transl(-6.775381919268437e-08,-3.4509772739553184e-08,0))
+hIsland = hIsland.add(rect(3.5220632642160877e-09,3.5220632642160877e-09).transl(-8.32428446835302e-09,4e-08,0))
+hIsland = hIsland.sub(rect(1.2617079061598136e-09,1.2617079061598136e-09).transl(-1.2520969690487665e-08,4e-08,0))
+hIsland = hIsland.add(rect(4.981953223286398e-09,4.981953223286398e-09).transl(-3.8161282083769696e-08,-4e-08,0))
+hIsland = hIsland.add(rect(3.2092398215731346e-09,3.2092398215731346e-09).transl(-5.59735049059633e-08,-3.8792461429586615e-08,0))
+hIsland = hIsland.add(rect(8.792220781050554e-09,8.792220781050554e-09).transl(-6.905310328694981e-08,3.380639982970366e-08,0))
+hIsland = hIsland.add(rect(7.522893326823793e-09,7.522893326823793e-09).transl(1.3684904312694798e-08,-4e-08,0))
+hIsland = hIsland.sub(rect(2.5921952421879946e-09,2.5921952421879946e-09).transl(-3.441441107465824e-08,4e-08,0))
+
+
+    vIsland := hIsland.rotz(pi / 2)
+    vIslands := Universe().Inverse()
+
+    hIslands := Universe().Inverse()
+    hIslands = hIslands.add(hIsland.transl(-a/2, a, 0))
+    hIslands = hIslands.add(hIsland.transl(-a/2, -a, 0))
+    hIslands = hIslands.add(hIsland.transl(a/2, a, 0))
+    hIslands = hIslands.add(hIsland.transl(a/2, -a, 0))
+    hIslands = hIslands.add(hIsland.transl(-a/2, 0, 0))
+    hIslands = hIslands.add(hIsland.transl(a/2, 0, 0))
+
+    vIslands = vIslands.add(vIsland.transl(-a, a/2, 0))
+    vIslands = vIslands.add(vIsland.transl(a, a/2, 0))
+    vIslands = vIslands.add(vIsland.transl(-a, -a/2, 0))
+    vIslands = vIslands.add(vIsland.transl(a, -a/2, 0))
+    vIslands = vIslands.add(vIsland.transl(0, a/2, 0))
+    vIslands = vIslands.add(vIsland.transl(0, -a/2, 0))
+
+    DefRegion(1, hIslands)
+    DefRegion(2, vIslands)
+    TableAdd(m_full.Region(1))
+    TableAdd(m_full.Region(2))
+    setgeom(hIslands.add(vIslands))
+    save(m)
+
+
+    r2o2 := sqrt(2) / 2
+    m = RandomMagSeed(4)
+    B_ext = vector(Bmax*r2o2, Bmax*r2o2, 0)
+    relax()
+    minimize()
+
+    for B := Bmax; B >= -Bmax; B -= Bstep {
+        B_ext = vector(B*r2o2, B*r2o2, 0)
+        minimize()
+        tablesave()
+    }
+
+    

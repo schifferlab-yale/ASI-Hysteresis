@@ -1,0 +1,120 @@
+//mumax 3.10 [windows_amd64 go1.11.6(gc) CUDA-11.0]
+//GPU info: NVIDIA GeForce RTX 3090(24575MB), CUDA Driver 11.7, cc=8.6, using cc=80 PTX
+//(c) Arne Vansteenkiste, Dynamat LAB, Ghent University, Belgium
+//This is free software without any warranty. See license.txt
+//********************************************************************//
+//  If you use mumax in any work or publication,                      //
+//  we kindly ask you to cite the references in references.bib        //
+//********************************************************************//
+//output directory: r1;p0.8;a5.12e-07;l3.0000000000000004e-07;s0.out/
+randSeed(0)
+ThermSeed(0)
+resolution := 2e-09
+zResolution := 5e-09
+a := 5.12e-07
+gridSize := 512
+gridDepth := 5
+SetCellsize(resolution, resolution, zResolution)
+SetGridsize(gridSize, gridSize, gridDepth)
+SetPBC(16, 16, 0)
+//resizing...
+Msat = 700e3
+Aex = 13e-12
+alpha = 0.2
+Bmax := 0.1
+Bstep := Bmax / 500.0
+TableAdd(B_ext)
+TableAdd(m_full)
+islandWidth := 8e-08
+islandLength := 3.0000000000000004e-07
+ellipseConstant := 1.2000000000000002e-07
+hIsland := rect(islandLength-2*ellipseConstant, islandWidth)
+hIsland = hIsland.add(ellipse(ellipseConstant*2, islandWidth).transl(islandLength/2-ellipseConstant, 0, 0))
+hIsland = hIsland.add(ellipse(ellipseConstant*2, islandWidth).transl(-islandLength/2+ellipseConstant, 0, 0))
+hIsland = hIsland.add(rect(6.627568115306522e-09, 6.627568115306522e-09).transl(6.612626786806549e-08, -3.814430606980809e-08, 0))
+hIsland = hIsland.add(rect(7.27525134109728e-09, 7.27525134109728e-09).transl(6.19994652294022e-08, 3.855160210683321e-08, 0))
+hIsland = hIsland.sub(rect(8.612054761409792e-09, 8.612054761409792e-09).transl(1.3838475858384112e-07, 1.716826564308075e-08, 0))
+hIsland = hIsland.add(rect(3.442651594783461e-09, 3.442651594783461e-09).transl(9.06553218616133e-08, -3.45139777318377e-08, 0))
+hIsland = hIsland.add(rect(4.4339511799402985e-10, 4.4339511799402985e-10).transl(-8.501763793718501e-08, 3.5548182506771825e-08, 0))
+hIsland = hIsland.sub(rect(2.7737898812021412e-09, 2.7737898812021412e-09).transl(-1.376145249116969e-07, 1.7698443208466336e-08, 0))
+hIsland = hIsland.add(rect(2.2292766653620234e-10, 2.2292766653620234e-10).transl(3.2570113719732226e-08, 3.9990824663592306e-08, 0))
+hIsland = hIsland.add(rect(9.022816021954575e-09, 9.022816021954575e-09).transl(-1.1356939745053443e-07, -2.8705701736675188e-08, 0))
+hIsland = hIsland.add(rect(4.3288541536308515e-09, 4.3288541536308515e-09).transl(-5.595693534373699e-08, 3.9053008857706696e-08, 0))
+hIsland = hIsland.sub(rect(3.4694295339244797e-09, 3.4694295339244797e-09).transl(8.149678679917436e-08, -3.612952155380291e-08, 0))
+hIsland = hIsland.add(rect(1.5613258492733373e-09, 1.5613258492733373e-09).transl(-1.0136728458692923e-07, -3.215709821535564e-08, 0))
+hIsland = hIsland.sub(rect(8.355566395133876e-09, 8.355566395133876e-09).transl(-5.420885462783972e-08, -3.917756069431146e-08, 0))
+hIsland = hIsland.add(rect(6.860511325757299e-09, 6.860511325757299e-09).transl(-1.113410409259884e-07, 2.940830393136659e-08, 0))
+hIsland = hIsland.add(rect(6.988155705768319e-09, 6.988155705768319e-09).transl(9.461970360466592e-08, 3.37050835368678e-08, 0))
+hIsland = hIsland.add(rect(6.928194351659371e-09, 6.928194351659371e-09).transl(4.740902575173468e-08, -3.957682518059084e-08, 0))
+hIsland = hIsland.add(rect(9.75811904147613e-09, 9.75811904147613e-09).transl(-2.1634568013795976e-08, -4e-08, 0))
+hIsland = hIsland.add(rect(4.683245113793357e-09, 4.683245113793357e-09).transl(-1.0410514261340202e-07, -3.14614894015019e-08, 0))
+hIsland = hIsland.sub(rect(1.1239700120977336e-09, 1.1239700120977336e-09).transl(-4.968988618197825e-08, 3.9457865547583714e-08, 0))
+hIsland = hIsland.add(rect(7.2198047912771415e-09, 7.2198047912771415e-09).transl(9.166304130368895e-08, -3.431499402946433e-08, 0))
+hIsland = hIsland.sub(rect(3.0985997578106107e-09, 3.0985997578106107e-09).transl(-1.2737384093545245e-07, 2.3376947575376727e-08, 0))
+hIsland = hIsland.add(rect(4.36923196252481e-09, 4.36923196252481e-09).transl(4.485684380216006e-08, -3.969225252172886e-08, 0))
+hIsland = hIsland.add(rect(1.339777490997417e-09, 1.339777490997417e-09).transl(1.3984431471894433e-09, -4e-08, 0))
+hIsland = hIsland.sub(rect(5.698817481775973e-09, 5.698817481775973e-09).transl(-6.022166875591041e-08, 3.871068003307504e-08, 0))
+hIsland = hIsland.add(rect(4.673730118193498e-10, 4.673730118193498e-10).transl(-4.830792966231584e-08, -3.95317308717942e-08, 0))
+hIsland = hIsland.sub(rect(7.854045699038055e-09, 7.854045699038055e-09).transl(-7.114477268270277e-08, 3.757526917311544e-08, 0))
+hIsland = hIsland.sub(rect(8.043799818278433e-09, 8.043799818278433e-09).transl(-2.7317255248103942e-08, -4e-08, 0))
+hIsland = hIsland.add(rect(8.031667527464946e-09, 8.031667527464946e-09).transl(1.0305151532380885e-07, 3.1734096820114e-08, 0))
+hIsland = hIsland.sub(rect(6.309866871220546e-09, 6.309866871220546e-09).transl(1.376229686458341e-07, -1.76927374298603e-08, 0))
+hIsland = hIsland.add(rect(2.2684300176938944e-09, 2.2684300176938944e-09).transl(-9.648307337573985e-08, 3.3299984909099004e-08, 0))
+hIsland = hIsland.sub(rect(4.721356416732907e-09, 4.721356416732907e-09).transl(4.0960337081207605e-08, 3.983280475390759e-08, 0))
+hIsland = hIsland.sub(rect(5.189148122556567e-09, 5.189148122556567e-09).transl(1.223730820940121e-07, 2.553257985061636e-08, 0))
+hIsland = hIsland.sub(rect(4.653778734427562e-09, 4.653778734427562e-09).transl(1.0437930275745186e-07, -3.1389522882847596e-08, 0))
+hIsland = hIsland.add(rect(7.974234243164797e-09, 7.974234243164797e-09).transl(4.403677535099189e-08, 3.9725403204367e-08, 0))
+hIsland = hIsland.add(rect(3.2833456200837063e-09, 3.2833456200837063e-09).transl(-1.4945551119866447e-07, -3.806147720986727e-09, 0))
+hIsland = hIsland.sub(rect(6.3956815967512135e-09, 6.3956815967512135e-09).transl(3.014874515642493e-08, -3.9999969270652697e-08, 0))
+hIsland = hIsland.add(rect(1.2055291684524682e-10, 1.2055291684524682e-10).transl(-1.4429661105098607e-07, -1.2185076037056393e-08, 0))
+hIsland = hIsland.add(rect(5.919770435030119e-09, 5.919770435030119e-09).transl(-3.3427399412282e-08, 3.998368130079055e-08, 0))
+hIsland = hIsland.sub(rect(1.8566535484685376e-09, 1.8566535484685376e-09).transl(1.0183607706569527e-07, 3.2040907935206644e-08, 0))
+hIsland = hIsland.sub(rect(3.896156820330343e-10, 3.896156820330343e-10).transl(-8.538045458352577e-08, -3.548552952358349e-08, 0))
+hIsland = hIsland.add(rect(2.7101411261354215e-09, 2.7101411261354215e-09).transl(-3.058024082710497e-08, 3.999953238696472e-08, 0))
+hIsland = hIsland.sub(rect(7.954513089938719e-09, 7.954513089938719e-09).transl(-3.48179461190954e-08, -3.996774726811815e-08, 0))
+hIsland = hIsland.add(rect(5.373696250521659e-09, 5.373696250521659e-09).transl(1.204204885000304e-07, 2.6297729643061234e-08, 0))
+hIsland = hIsland.add(rect(7.953135351690477e-10, 7.953135351690477e-10).transl(1.2938892883680206e-07, 2.241487805670625e-08, 0))
+hIsland = hIsland.sub(rect(2.719982621423177e-09, 2.719982621423177e-09).transl(8.647152340233906e-09, -4e-08, 0))
+hIsland = hIsland.sub(rect(2.468331341051758e-09, 2.468331341051758e-09).transl(-7.533940525104317e-08, 3.703502596114129e-08, 0))
+hIsland = hIsland.sub(rect(4.897200989590774e-09, 4.897200989590774e-09).transl(6.472747921723405e-08, 3.8288382611753976e-08, 0))
+hIsland = hIsland.add(rect(9.947392844714638e-09, 9.947392844714638e-09).transl(-5.9505925496199474e-08, 3.8771983528506084e-08, 0))
+hIsland = hIsland.sub(rect(2.6255394719375423e-09, 2.6255394719375423e-09).transl(-2.5361974497662764e-08, 4e-08, 0))
+hIsland = hIsland.sub(rect(5.008219612785829e-09, 5.008219612785829e-09).transl(1.1867926519681234e-07, -2.694848568030294e-08, 0))
+hIsland = hIsland.add(rect(5.195795606617228e-09, 5.195795606617228e-09).transl(7.773376199536915e-08, -3.669920974893882e-08, 0))
+vIsland := hIsland.rotz(pi / 2)
+vIslands := Universe().Inverse()
+hIslands := Universe().Inverse()
+hIslands = hIslands.add(hIsland.transl(-a/2, a, 0))
+hIslands = hIslands.add(hIsland.transl(-a/2, -a, 0))
+hIslands = hIslands.add(hIsland.transl(a/2, a, 0))
+hIslands = hIslands.add(hIsland.transl(a/2, -a, 0))
+hIslands = hIslands.add(hIsland.transl(-a/2, 0, 0))
+hIslands = hIslands.add(hIsland.transl(a/2, 0, 0))
+vIslands = vIslands.add(vIsland.transl(-a, a/2, 0))
+vIslands = vIslands.add(vIsland.transl(a, a/2, 0))
+vIslands = vIslands.add(vIsland.transl(-a, -a/2, 0))
+vIslands = vIslands.add(vIsland.transl(a, -a/2, 0))
+vIslands = vIslands.add(vIsland.transl(0, a/2, 0))
+vIslands = vIslands.add(vIsland.transl(0, -a/2, 0))
+DefRegion(1, hIslands)
+DefRegion(2, vIslands)
+TableAdd(m_full.Region(1))
+TableAdd(m_full.Region(2))
+setgeom(hIslands.add(vIslands))
+save(m)
+r2o2 := sqrt(2) / 2
+m = RandomMagSeed(4)
+B_ext = vector(Bmax*r2o2, Bmax*r2o2, 0)
+relax()
+minimize()
+for B := Bmax; B >= -Bmax; B -= Bstep {
+	B_ext = vector(B*r2o2, B*r2o2, 0)
+	minimize()
+	tablesave()
+}
+//********************************************************************//
+//Please cite the following references, relevant for your simulation. //
+//See bibtex file in output folder for justification.                 //
+//********************************************************************//
+//   * Vansteenkiste et al., AIP Adv. 4, 107133 (2014).
+//   * Exl et al., J. Appl. Phys. 115, 17D118 (2014).
