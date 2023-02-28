@@ -88,23 +88,17 @@ def getScript(width,length,pointiness,spacing,seed=0):
         else:
             raise Exception()
 
-    def randPointOnSurface():
-        x=random.uniform(0,length/2)
-        y=getY(x)
-        if random.random()<0.5:
-            y=-y
-        if random.random()<0.5:
-            x=-x
-        return (x,y)
+    
 
     roughCode=""
-    for i in range(50):
-        x,y=randPointOnSurface()
-        size=random.uniform(0,10e-9)
-        if random.random()<0.5:
-            roughCode+=f"hIsland = hIsland.add(rect({size},{size}).transl({x},{y},0))\n"
+    for x in np.arange(-length/2,length/2,resolution):
+        y=getY(x)
+        offset=np.random.normal(scale=5e-9)
+        if offset>0:
+            roughCode+=f"hIsland = hIsland.add(rect({resolution},{offset*2}).transl({x},{y},0))\n"
         else:
-            roughCode+=f"hIsland = hIsland.sub(rect({size},{size}).transl({x},{y},0))\n"
+            roughCode+=f"hIsland = hIsland.sub(rect({resolution},{offset*2}).transl({x},{y},0))\n"
+
 
     code="""
     randSeed("""+str(seed)+""")
