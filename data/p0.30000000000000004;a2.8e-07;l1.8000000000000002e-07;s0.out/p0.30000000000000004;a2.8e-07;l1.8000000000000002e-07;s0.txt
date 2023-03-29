@@ -73,6 +73,7 @@
         B_ext = vector(B*r2o2, B*r2o2, 0)
         minimize()
         tablesave()
+        save(m)
     }
 
     

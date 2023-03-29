@@ -84,20 +84,23 @@ def getScript(width,length,pointiness,spacing,seed=0):
         if abs(x)<=length*(1-pointiness)/2:
             return width/2
         elif abs(x)<=length/2:
-            return width/2*np.sqrt(1-((2*x-length+length*pointiness)/(length*pointiness))**2)
+            return width/2*np.sqrt(1-((2*abs(x)-length+length*pointiness)/(length*pointiness))**2)
         else:
             raise Exception()
 
     
 
     roughCode=""
-    for x in np.arange(-length/2,length/2,resolution):
-        y=getY(x)
-        offset=np.random.normal(scale=5e-9)
-        if offset>0:
-            roughCode+=f"hIsland = hIsland.add(rect({resolution},{offset*2}).transl({x},{y},0))\n"
-        else:
-            roughCode+=f"hIsland = hIsland.sub(rect({resolution},{offset*2}).transl({x},{y},0))\n"
+    spurWidth=resolution*5
+    for s in [-1,1]:
+        for x in np.arange(-length/2,length/2,spurWidth):
+            y=getY(x)
+
+            offset=np.random.normal(scale=2e-9)
+            if offset>0:
+                roughCode+=f"hIsland = hIsland.add(rect({spurWidth},{offset*2}).transl({x},{y*s},0))\n"
+            else:
+                roughCode+=f"hIsland = hIsland.sub(rect({spurWidth},{offset*2}).transl({x},{y*s},0))\n"
 
 
     code="""

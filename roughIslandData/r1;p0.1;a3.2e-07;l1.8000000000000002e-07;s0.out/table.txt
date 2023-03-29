@@ -1,0 +1,1 @@
+# t (s)	mx ()	my ()	mz ()	B_extx (T)	B_exty (T)	B_extz (T)	m_fullx (A/m)	m_fully (A/m)	m_fullz (A/m)	m_full.region1x (A/m)	m_full.region1y (A/m)	m_full.region1z (A/m)	m_full.region2x (A/m)	m_full.region2y (A/m)	m_full.region2z (A/m)
