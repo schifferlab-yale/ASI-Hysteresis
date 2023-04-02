@@ -91,12 +91,13 @@ def getScript(width,length,pointiness,spacing,seed=0):
     
 
     roughCode=""
-    spurWidth=resolution*5
+    spurWidth=resolution*3
     for s in [-1,1]:
-        for x in np.arange(-length/2,length/2,spurWidth):
+        for i in range(100):
+            x=np.random.uniform(low = -length/2, high=length/2)
             y=getY(x)
-
-            offset=np.random.normal(scale=2e-9)
+            
+            offset=np.random.normal(scale=1e-9)
             if offset>0:
                 roughCode+=f"hIsland = hIsland.add(rect({spurWidth},{offset*2}).transl({x},{y*s},0))\n"
             else:
