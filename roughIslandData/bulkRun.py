@@ -89,20 +89,24 @@ def getScript(width,length,pointiness,spacing,seed=0):
             raise Exception()
 
     
-
-    roughCode=""
-    spurWidth=resolution*3
-    for s in [-1,1]:
-        for i in range(100):
-            x=np.random.uniform(low = -length/2, high=length/2)
-            y=getY(x)
-            
-            offset=np.random.normal(scale=1e-9)
-            if offset>0:
-                roughCode+=f"hIsland = hIsland.add(rect({spurWidth},{offset*2}).transl({x},{y*s},0))\n"
-            else:
-                roughCode+=f"hIsland = hIsland.sub(rect({spurWidth},{offset*2}).transl({x},{y*s},0))\n"
-
+    def genRoughCode():
+        roughCode="""hIsland = rect(islandLength-2*ellipseConstant, islandWidth)\n
+    hIsland = hIsland.add(ellipse(ellipseConstant*2,islandWidth).transl(islandLength/2-ellipseConstant, 0, 0))\n
+    hIsland = hIsland.add(ellipse(ellipseConstant*2,islandWidth).transl(-islandLength/2+ellipseConstant, 0, 0))\n"""
+        for s in [-1,1]:
+            for i in range(200):
+                
+                spurWidth=resolution*np.random.uniform(1,5)
+                x=np.random.uniform(low = -length/2, high=length/2)
+                y=getY(x)
+                
+                offset=np.random.normal(scale=1e-9)
+                if offset>0:
+                    roughCode+=f"hIsland = hIsland.add(rect({spurWidth},{offset*2}).transl({x},{y*s},0))\n"
+                else:
+                    roughCode+=f"hIsland = hIsland.sub(rect({spurWidth},{offset*2}).transl({x},{y*s},0))\n"
+        roughCode+="vIsland = hIsland.rotz(pi / 2)\n"
+        return roughCode
 
     code="""
     randSeed("""+str(seed)+""")
@@ -137,29 +141,36 @@ def getScript(width,length,pointiness,spacing,seed=0):
     islandLength := """+str(length)+"""
     ellipseConstant:="""+str(constant)+"""
 
+    hIsland:= Universe().Inverse()
+    vIsland:=Universe().Inverse()
 
-    hIsland := rect(islandLength-2*ellipseConstant, islandWidth)
-    hIsland = hIsland.add(ellipse(ellipseConstant*2,islandWidth).transl(islandLength/2-ellipseConstant, 0, 0))
-    hIsland = hIsland.add(ellipse(ellipseConstant*2,islandWidth).transl(-islandLength/2+ellipseConstant, 0, 0))
-    
-    """+roughCode+"""
-
-    vIsland := hIsland.rotz(pi / 2)
     vIslands := Universe().Inverse()
 
     hIslands := Universe().Inverse()
+    """+genRoughCode()+"""
     hIslands = hIslands.add(hIsland.transl(-a/2, a, 0))
+    """+genRoughCode()+"""
     hIslands = hIslands.add(hIsland.transl(-a/2, -a, 0))
+    """+genRoughCode()+"""
     hIslands = hIslands.add(hIsland.transl(a/2, a, 0))
+    """+genRoughCode()+"""
     hIslands = hIslands.add(hIsland.transl(a/2, -a, 0))
+    """+genRoughCode()+"""
     hIslands = hIslands.add(hIsland.transl(-a/2, 0, 0))
+    """+genRoughCode()+"""
     hIslands = hIslands.add(hIsland.transl(a/2, 0, 0))
 
+    """+genRoughCode()+"""
     vIslands = vIslands.add(vIsland.transl(-a, a/2, 0))
+    """+genRoughCode()+"""
     vIslands = vIslands.add(vIsland.transl(a, a/2, 0))
+    """+genRoughCode()+"""
     vIslands = vIslands.add(vIsland.transl(-a, -a/2, 0))
+    """+genRoughCode()+"""
     vIslands = vIslands.add(vIsland.transl(a, -a/2, 0))
+    """+genRoughCode()+"""
     vIslands = vIslands.add(vIsland.transl(0, a/2, 0))
+    """+genRoughCode()+"""
     vIslands = vIslands.add(vIsland.transl(0, -a/2, 0))
 
     DefRegion(1, hIslands)
