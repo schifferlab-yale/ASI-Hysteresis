@@ -210,7 +210,8 @@ spacingStepCount=10
 
 
 #spacingVals=np.array([280,320,340,380,440,512,768,1024])*1e-9
-spacingVals=np.array([220,320,512])*1e-9
+#spacingVals=np.array([220,320,512])*1e-9 #ALREADY DONE
+spacingVals=np.array([400,440,800])*1e-9
 
 #2*spacing/resolution should have a lot of factors of 2
 
