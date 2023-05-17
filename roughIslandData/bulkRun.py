@@ -178,7 +178,7 @@ def getScript(width,length,pointiness,spacing,seed=0):
     TableAdd(m_full.Region(1))
     TableAdd(m_full.Region(2))
     setgeom(hIslands.add(vIslands))
-    save(m)
+    save(geom)
 
 
     r2o2 := sqrt(2) / 2
@@ -211,7 +211,8 @@ spacingStepCount=10
 
 #spacingVals=np.array([280,320,340,380,440,512,768,1024])*1e-9
 #spacingVals=np.array([220,320,512])*1e-9 #ALREADY DONE
-spacingVals=np.array([400,440,800])*1e-9
+#spacingVals=np.array([400,440,800])*1e-9 #ALREADY DONE
+spacingVals=np.array([280,340,420])*1e-9 #ALREADY DONE
 
 #2*spacing/resolution should have a lot of factors of 2
 
