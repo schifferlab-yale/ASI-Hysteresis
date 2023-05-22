@@ -212,7 +212,7 @@ spacingStepCount=10
 #spacingVals=np.array([280,320,340,380,440,512,768,1024])*1e-9
 #spacingVals=np.array([220,320,512])*1e-9 #ALREADY DONE
 #spacingVals=np.array([400,440,800])*1e-9 #ALREADY DONE
-spacingVals=np.array([280,340,420])*1e-9 #ALREADY DONE
+spacingVals=np.array([280,340,420,400,440,800,220,320,512])*1e-9
 
 #2*spacing/resolution should have a lot of factors of 2
 
@@ -228,5 +228,5 @@ for spacing in spacingVals:
                 print(f"spacing={spacing} length={length} rejected")
                 continue#islands have merged
 
-            for seed in [0,1,2]:
+            for seed in [3,4,5,6]:
                 run_mumax3(getScript(width,length,constant,spacing,seed=seed), name=f"r1;p{constant};a{spacing};l{length};s{seed}", verbose=False)
