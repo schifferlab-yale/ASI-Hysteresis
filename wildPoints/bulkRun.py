@@ -165,24 +165,33 @@ width=80e-9
 
 pointyConstantMin=0
 pointyConstantMax=1
-pointyConstantStepCount=100
+pointyConstantStepCount=10
 
 spacingMin=280e-9
 spacingMax=500e-9
 spacingStepCount=10
 
 
-spacing = 280e-9
-length=200e-9
+#spacingVals=np.array([280,320,340,380,440,512,768,1024])*1e-9
+spacingVals=np.array([200,220,240,260,280,300,320,340,360,380,400,420,440,512,1024])*1e-9
 
-pointinessVals=np.linspace(pointyConstantMin,pointyConstantMax,pointyConstantStepCount+1)[:]
+#2*spacing/resolution should have a lot of factors of 2
 
-print(pointinessVals)
-for constant in pointinessVals:
+#lengthVals=np.array([100,150,200,300,400])*1e-9
+lengthVals=np.array([180,200,230,270,300])*1e-9
 
-    if (spacing-length)/2<width/2:
-        print(f"spacing={spacing} length={length} rejected")
-        continue#islands have merged
+for spacing in spacingVals:
+    for length in lengthVals:
 
-    for seed in [0,1,2]:
-        run_mumax3(getScript(width,length,constant,spacing,seed=seed), name=f"p{constant};a{spacing};l{length};s{seed}", verbose=False)
+        pointinessVals=np.linspace(pointyConstantMin,pointyConstantMax,pointyConstantStepCount+1)[:]
+        pointinessVals=np.append(pointinessVals,80/(1e9*length))
+
+        print(pointinessVals)
+        for constant in pointinessVals:
+    
+            if (spacing-length)/2<width/2:
+                print(f"spacing={spacing} length={length} rejected")
+                continue#islands have merged
+
+            for seed in [0,1,2]:
+                run_mumax3(getScript(width,length,constant,spacing,seed=seed), name=f"p{constant};a{spacing};l{length};s{seed}", verbose=False)
