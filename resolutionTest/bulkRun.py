@@ -185,7 +185,7 @@ for spacing in spacingVals:
         pointinessVals=np.linspace(pointyConstantMin,pointyConstantMax,pointyConstantStepCount+1)[:]
         pointinessVals=np.append(pointinessVals,80/(1e9*length))
 
-        for resolution in [0.5e-9,1e-9,2e-9,4e-9]:
+        for resolution in [1e-9,2e-9,4e-9]:
             for constant in [0.1,0.5,0.9]:
         
                 if (spacing-length)/2<width/2:
@@ -193,4 +193,4 @@ for spacing in spacingVals:
                     continue#islands have merged
 
                 for seed in [0]:
-                    run_mumax3(getScript(width,length,constant,spacing,seed=seed), name=f"p{constant};a{spacing};l{length};s{seed}", verbose=False)
+                    run_mumax3(getScript(width,length,constant,spacing,resolution=resolution,seed=seed), name=f"p{constant};a{spacing};l{length};s{seed};r{resolution}", verbose=False)
