@@ -19,22 +19,30 @@ def read_mumax3_ovffiles(outputdir):
     
     from subprocess import run, PIPE, STDOUT
     from glob import glob
-    from os import path
+    from os import path, remove
     from numpy import load
 
     # convert all ovf files in the output directory to numpy files
-    p = run(["mumax3-convert","-numpy",outputdir+"/*.ovf"], stdout=PIPE, stderr=STDOUT)
-    run("rm","",outputdir+"/*.ovf")
-    if p.returncode != 0:
-        print(p.stdout.decode('UTF-8'))
-
-    # read the numpy files (the converted ovf files)
-    fields = {}
-    for npyfile in glob(outputdir+"/*.npy"):
-        key = path.splitext(path.basename(npyfile))[0]
-        fields[key] = load(npyfile)
+    """p = run(["mumax3-convert","-numpy",outputdir+"/*.ovf"], stdout=PIPE, stderr=STDOUT)
     
-    return fields
+    if p.returncode != 0:
+        print(p.stdout.decode('UTF-8'))"""
+    
+    p = run(["mumax3-convert","-png","-arrows","10",outputdir+"/*.ovf"], stdout=PIPE, stderr=STDOUT)
+
+    for ovffile in glob(outputdir+"/*.ovf"):
+        #print(npyfile)
+        remove(ovffile)
+        pass
+    # read the numpy files (the converted ovf files)
+    #fields = {}
+    #for npyfile in glob(outputdir+"/*.npy"):
+        
+        #key = path.splitext(path.basename(npyfile))[0]
+        #fields[key] = load(npyfile)
+    
+    #return fields
+    return None
 
 def run_mumax3(script, name, verbose=False):
     """ Executes a mumax3 script and convert ovf files to numpy files
@@ -181,6 +189,10 @@ spacingVals=np.array([280,300,320,340,360,380,400,420,440,512,1024])*1e-9
 lengthVals=np.array([180,200,230,300])*1e-9
 
 for spacing in spacingVals:
+
+    #temp
+    if spacing < 450e-9: continue
+
     for length in lengthVals:
 
         pointinessVals=np.linspace(pointyConstantMin,pointyConstantMax,pointyConstantStepCount+1)[:]
