@@ -4,4 +4,8 @@ archive/spinWave/run1.out/*
 archive/spinWave/*.out
 archive/spinWaveBulk/pointinessdata/*
 Temp Files
+<<<<<<< HEAD
 movies/p*
+=======
+movieData
+>>>>>>> e9dd70906eb0eeb266bc8c7616112604f37ef283
