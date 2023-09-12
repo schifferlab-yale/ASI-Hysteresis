@@ -6,10 +6,11 @@ import glob
 import os
 import glob
 import shutil
+import gc
 
 mpl.rcParams['axes.unicode_minus'] = False
 mpl.rcParams['font.family'] = 'Helvetica'
-
+mpl.use('Agg')
 
 
 
@@ -48,7 +49,7 @@ def genMovie(path,name="out.mp4",pointiness=0,spacing=0,length=0):
     data=loadFile(path+"/table.txt")
 
     for imPath in imagePaths:
-        im = plt.imread(imPath)
+        im = plt.imread(imPath)[::-1]
         images.append(im)
 
     assert len(images)==len(data)
@@ -71,7 +72,7 @@ def genMovie(path,name="out.mp4",pointiness=0,spacing=0,length=0):
 
         fig,(imAx,pltAx)=plt.subplots(1,2)
         fig.set_size_inches(13, 7)
-        fig.set_dpi(200)
+        fig.set_dpi(100)
 
         thisRow=data.loc[i,:]
 
@@ -87,6 +88,10 @@ def genMovie(path,name="out.mp4",pointiness=0,spacing=0,length=0):
         imAx.arrow(0.5,0.5,0.3*arrowScale,0.3*arrowScale,width=0.1,head_length=0.1,lw=0,color="white",head_width=0.15,alpha=0.5,transform=imAx.transAxes)
         imAx.text(0.5,0.5,f"{round(thisRow.H)}Oe",horizontalalignment='center',
                 verticalalignment='center',rotation=45,fontsize=20,fontweight=2,transform=imAx.transAxes)
+        
+
+        imAx.yaxis.set_major_formatter(lambda x,_:round(2*x))
+        imAx.xaxis.set_major_formatter(lambda x,_:round(2*x))
 
 
         pltAx.plot(data["H"],data["m"],lw=3,color="k")
@@ -99,7 +104,7 @@ def genMovie(path,name="out.mp4",pointiness=0,spacing=0,length=0):
 
         pltAx.tick_params(direction='in',top=1,right=1,width=1,length=4)
 
-        plt.suptitle(f"p={round(pointiness*100)/100}\na={round(spacing*1e9)}nm\nl={round(length*1e9)}nm",fontsize=20)
+        plt.suptitle(f"p = {round(pointiness*100)/100}\na = {round(spacing*1e9)}nm\nl = {round(length*1e9)}nm",fontsize=20)
 
         pltAx.tick_params(axis='x', labelsize=20)
         pltAx.tick_params(axis='y', labelsize=20)
@@ -108,10 +113,15 @@ def genMovie(path,name="out.mp4",pointiness=0,spacing=0,length=0):
         
         plt.tight_layout()
         plt.savefig(final_directory+f"/{i}.png")
-        plt.close()
 
-        os.system(f"ffmpeg -framerate 30  -i '{final_directory}/%d.png' \
-  -c:v libx264 -pix_fmt yuv420p '{name}' -y >/dev/null 2>&1")
+
+        plt.cla() 
+        plt.clf() 
+        plt.close('all')
+        gc.collect()
+
+    os.system(f"ffmpeg -framerate 30  -i '{final_directory}/%d.png' \
+-c:v libx264 -pix_fmt yuv420p '{name}' -y >/dev/null 2>&1")
 
 
 
@@ -126,15 +136,16 @@ def decodeAttributes(string):
 
 
 filePrefix="movieData/"
-for name in glob.glob(filePrefix+"*.out")[0:10]:
+folders=sorted(glob.glob(filePrefix+"*.out"))
+for i,name in enumerate(folders):
     try:
         thisData=loadFile(name+"/table.txt")
     except Exception:
         print(f"Could not load {name}")
         continue
     desc=name[len(filePrefix):-len(".out")]
-    print(name)
-    print(desc)
+    #print(name)
+    #print(desc)
     pointiness, spacing, length, runNum = decodeAttributes(desc)
 
     
@@ -146,6 +157,6 @@ for name in glob.glob(filePrefix+"*.out")[0:10]:
     outName=f"{outFolder}/p={round(pointiness*100)/100}; a={round(spacing*1e9)}nm; l={round(length*1e9)}nm"
     #outName=outName.replace(".","\.")
     outName+=".mp4"
-    print(outName)
-
+    #print(outName)
+    print(i,"/",len(folders))
     genMovie(name,outName,pointiness,spacing,length)
