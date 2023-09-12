@@ -19,7 +19,7 @@
     Msat = 700e3
     Aex = 13e-12
     alpha = 0.2
-    Bmax := 1
+    Bmax := 1.0
     Bstep := Bmax / 5000.0
 
 
