@@ -6,3 +6,5 @@ archive/spinWaveBulk/pointinessdata/*
 Temp Files
 movieData
 movieOut
+movies/p*
+movieData
